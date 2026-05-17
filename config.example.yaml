@@ -1,0 +1,109 @@
+# LinkedIn Worker — пример конфигурации
+# Скопируй этот файл в config.yaml и заполни под себя:
+#   cp config.example.yaml config.yaml
+
+campaign:
+  # Название кампании (для логов и трекинга)
+  name: "my-outreach-2026"
+
+  # URL поиска людей на LinkedIn:
+  # 1. Зайди на linkedin.com/search/results/people/
+  # 2. Настрой фильтры (страна, индустрия, должность и т.п.)
+  # 3. Скопируй URL из адресной строки и вставь сюда
+  search_url: "https://www.linkedin.com/search/results/people/?keywords=YOUR_KEYWORDS"
+
+  # Кто ты и что предлагаешь. Claude использует это для понимания контекста.
+  # НЕ включается в сообщения напрямую — только для определения релевантности лида.
+  context: >
+    Я <твоя роль> в <твоей компании>.
+    Мы помогаем <ICP — кому ты помогаешь> делать <что именно>.
+    Ищу <что ищешь — клиентов, партнёров, инвесторов и т.п.>.
+
+icp:
+  # Должности, которые точно подходят (high priority)
+  strong_titles:
+    - Founder
+    - Co-Founder
+    - CEO
+    - Owner
+    - President
+    - Managing Director
+
+  # Должности, с которыми стоит попробовать
+  maybe_titles:
+    - Director
+    - Head of
+    - Partner
+    - VP
+
+  # Должности, которые всегда пропускаем
+  skip_titles:
+    - Intern
+    - Student
+    - Assistant
+    - Junior
+
+  # Сигналы в описании профиля, которые означают "пропустить"
+  skip_signals:
+    - "Open to work"
+    - "Seeking opportunities"
+    - "Looking for a job"
+
+voice:
+  # Тон сообщений: casual | professional | direct | friendly
+  tone: casual
+
+  # Пример сообщения в твоём стиле.
+  # Claude использует это как референс — будет писать похоже.
+  # Чем точнее пример, тем лучше совпадение по стилю.
+  sample_message: >
+    Hey {first_name} — saw your work at {company}.
+    Curious how you're approaching {topic}? Working on something similar and would love to swap notes.
+
+session:
+  # Сколько лидов обрабатывать за один запуск
+  batch_size: 10
+
+  # Задержки между действиями (антибан, в секундах)
+  # НЕ ставь меньше 3 секунд — LinkedIn быстро банит за подозрительную активность
+  min_delay_seconds: 3
+  max_delay_seconds: 8
+
+  # Сохранять скриншоты при ошибках (для дебага)
+  screenshot_on_error: true
+
+  # headless: true — браузер скрыт (быстрее, но риск детекта выше)
+  # headless: false — браузер видимый (медленнее, но безопаснее)
+  # Рекомендую false на первых запусках
+  headless: false
+
+  # Кеш списка connections (часов). LinkedIn рейт-лимитит этот эндпоинт.
+  connections_cache_hours: 24
+
+  # Максимум страниц в поиске людей (по 10 результатов на страницу)
+  max_search_pages: 10
+
+# --- Команда `connect` — комментирование постов + Connect-запросы ---
+connect_campaign:
+  # Ключевые слова для поиска постов (комментим релевантные)
+  keywords:
+    - "your topic"
+    - "another topic"
+
+  # Ключевые слова для поиска людей (по headline/имени)
+  people_search_keywords:
+    - "your role keyword"
+
+  # Какие источники использовать
+  use_content_search: true
+  use_people_search: true
+
+  max_content_search_pages: 5
+  max_people_search_pages: 5
+
+  # Ключевые слова, по которым считаем пост/профиль релевантным своей теме.
+  # Используется командой dm-recent для приоритизации.
+  # (Историческое имя ключа — gdc_keywords, оставлено для совместимости с кодом.)
+  gdc_keywords:
+    - "your topic keyword"
+    - "another topic keyword"

@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "linkedin-worker"
+version = "0.1.0"
+description = "Autonomous LinkedIn outreach via Playwright + Claude API"
+requires-python = ">=3.11"
+dependencies = [
+    "playwright>=1.40",
+    "anthropic>=0.40",
+    "click>=8.1",
+    "rich>=13.0",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+    "aiohttp>=3.9",
+    "playwright-stealth>=2.0.3",
+]
+
+[project.scripts]
+linkedin-worker = "linkedin_worker.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/linkedin_worker"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "freezegun>=1.5.5",
+]

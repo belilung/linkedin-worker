@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Виртуальные окружения
+.venv/
+venv/
+
+# Секреты — НИКОГДА не коммить
+.env
+config.yaml
+
+# Runtime data — cookies, БД, скриншоты
+data/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Тестовый мусор
+.pytest_cache/
+.coverage
+htmlcov/
